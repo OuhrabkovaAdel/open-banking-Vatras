@@ -1,10 +1,16 @@
 package cz.vatras.openbanking.application
 
+import cz.vatras.openbanking.api.request.AccountsRequest
 import cz.vatras.openbanking.domain.account.Account
-import org.springframework.web.bind.annotation.GetMapping
+import cz.vatras.openbanking.infrastructure.bank.BankAdapterFactory
+import org.springframework.stereotype.Service
 
-class AccountService {
-    fun getAccounts(): List<Account> {
-        return emptyList()
+@Service
+class AccountService(
+    private val bankAdapterFactory: BankAdapterFactory
+) {
+    suspend fun getAccounts(request: AccountsRequest): List<Account> {
+        val adapter = bankAdapterFactory.getBankAdapter(request.bank)
+        return adapter.getAccounts()
     }
 }

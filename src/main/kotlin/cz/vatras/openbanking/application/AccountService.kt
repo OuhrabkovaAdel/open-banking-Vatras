@@ -2,7 +2,8 @@ package cz.vatras.openbanking.application
 
 import cz.vatras.openbanking.api.request.AccountsRequest
 import cz.vatras.openbanking.domain.account.Account
-import cz.vatras.openbanking.domain.account.Balance
+import cz.vatras.openbanking.domain.balance.Balance
+import cz.vatras.openbanking.domain.transaction.Transaction
 import cz.vatras.openbanking.infrastructure.bank.BankAdapterFactory
 import org.springframework.stereotype.Service
 
@@ -23,5 +24,15 @@ class AccountService(
             throw IllegalArgumentException("Account not found")
         }
         return adapter.getBalances(account)
+    }
+
+    suspend fun getTransactions(bank: Bank, accountId: String): List<Transaction> {
+        val adapter = bankAdapterFactory.getBankAdapter(bank)
+
+        val account = adapter.getAccounts().firstOrNull { it.accountId == accountId }
+        if (account == null) {
+            throw IllegalArgumentException("Account not found")
+        }
+        return adapter.getTransactions(account)
     }
 }

@@ -1,6 +1,6 @@
 package cz.vatras.openbanking.infrastructure.bank.csas.mapper
 
-import cz.vatras.openbanking.domain.account.Balance
+import cz.vatras.openbanking.domain.balance.Balance
 import cz.vatras.openbanking.infrastructure.bank.csas.model.CsasBalanceResponse
 import org.springframework.stereotype.Component
 

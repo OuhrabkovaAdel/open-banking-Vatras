@@ -1,4 +1,4 @@
-package cz.vatras.openbanking.domain.account
+package cz.vatras.openbanking.domain.balance
 
 import java.math.BigDecimal
 

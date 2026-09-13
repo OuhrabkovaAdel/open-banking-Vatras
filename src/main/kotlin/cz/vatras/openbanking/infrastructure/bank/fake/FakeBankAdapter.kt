@@ -1,10 +1,12 @@
 package cz.vatras.openbanking.infrastructure.bank.fake
 
 import cz.vatras.openbanking.domain.account.Account
-import cz.vatras.openbanking.domain.account.Balance
+import cz.vatras.openbanking.domain.balance.Balance
+import cz.vatras.openbanking.domain.transaction.Transaction
 import cz.vatras.openbanking.infrastructure.bank.BankAdapter
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
+import java.time.LocalDate
 
 @Component
 class FakeBankAdapter : BankAdapter {
@@ -46,6 +48,23 @@ class FakeBankAdapter : BankAdapter {
                 currency = "EUR",
                 balanceType = "CLAB",
                 creditDebitIndicator = null
+            )
+        )
+    }
+
+    override suspend fun getTransactions(account: Account): List<Transaction> {
+        return listOf(
+            Transaction(
+                transactionId = "1",
+                amount = BigDecimal("100.0"),
+                currency = "CZK",
+                creditDebitIndicator = "DBIT",
+                bookingDate = LocalDate.now(),
+                valueDate = LocalDate.now(),
+                bankTransactionCode = "10000401000",
+                reference = "REF123",
+                description = "Test transaction",
+                counterparty = null
             )
         )
     }

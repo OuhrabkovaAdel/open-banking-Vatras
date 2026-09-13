@@ -1,21 +1,25 @@
 package cz.vatras.openbanking.infrastructure.bank.rb.mapper
 
 import cz.vatras.openbanking.domain.account.Account
-import cz.vatras.openbanking.infrastructure.bank.rb.model.RbAccountResponse
+import cz.vatras.openbanking.infrastructure.bank.rb.model.RbAccountListItem
 import org.springframework.stereotype.Component
 
 @Component
 class RbAccountMapper {
-    fun mapToAccount(rbAccountResponse: RbAccountResponse): Account {
+    fun mapToAccount(rbAccountListItem: RbAccountListItem): Account {
         return Account(
-            accountId = rbAccountResponse.accountId,
-            iban = rbAccountResponse.iban,
-            accountNumber = rbAccountResponse.accountNumber,
-            accountNumberPrefix = rbAccountResponse.accountNumberPrefix,
-            bankCode = rbAccountResponse.bankCode,
-            friendlyName = rbAccountResponse.friendlyName,
-            accountType = rbAccountResponse.accountTypeId,
-            mainCurrency = rbAccountResponse.mainCurrency
+            accountId = rbAccountListItem.accountId,
+            iban = rbAccountListItem.iban,
+            accountNumber = rbAccountListItem.accountNumber,
+            accountNumberPrefix = rbAccountListItem.accountNumberPrefix,
+            bankCode = rbAccountListItem.bankCode,
+            friendlyName = rbAccountListItem.friendlyName,
+            accountType = rbAccountListItem.accountTypeId,
+            mainCurrency = rbAccountListItem.mainCurrency
         )
+    }
+
+    fun mapToAccounts(rbAccountListItems: List<RbAccountListItem>): List<Account> {
+        return rbAccountListItems.map(::mapToAccount)
     }
 }

@@ -1,8 +1,10 @@
 package cz.vatras.openbanking.infrastructure.bank.fake
 
 import cz.vatras.openbanking.domain.account.Account
+import cz.vatras.openbanking.domain.account.Balance
 import cz.vatras.openbanking.infrastructure.bank.BankAdapter
 import org.springframework.stereotype.Component
+import java.math.BigDecimal
 
 @Component
 class FakeBankAdapter : BankAdapter {
@@ -27,6 +29,23 @@ class FakeBankAdapter : BankAdapter {
                 friendlyName = "Savings Account",
                 accountType = "SAVINGS",
                 mainCurrency = "CZK"
+            )
+        )
+    }
+
+    override suspend fun getBalances(account: Account): List<Balance> {
+        return listOf(
+            Balance(
+                amount = BigDecimal("1000.0"),
+                currency = "CZK",
+                balanceType = "CLAB",
+                creditDebitIndicator = null
+            ),
+            Balance(
+                amount = BigDecimal("500.0"),
+                currency = "EUR",
+                balanceType = "CLAB",
+                creditDebitIndicator = null
             )
         )
     }

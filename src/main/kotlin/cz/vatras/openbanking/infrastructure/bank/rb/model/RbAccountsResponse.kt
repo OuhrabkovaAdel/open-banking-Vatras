@@ -7,9 +7,9 @@ data class RbAccountsResponse(
     val last: Boolean,
     val totalPages: Int,
     val totalSize: Int,
-    val accounts: List<RbAccountResponse>
+    val accounts: List<RbAccountListItem>
 )
-data class RbAccountResponse(
+data class RbAccountListItem(
     val accountId: String,
     val accountName: String,
     val friendlyName: String,

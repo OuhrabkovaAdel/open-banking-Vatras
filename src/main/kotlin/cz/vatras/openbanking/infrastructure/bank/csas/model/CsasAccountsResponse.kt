@@ -5,10 +5,10 @@ data class CsasAccountsResponse(
     val pageCount: Int,
     val pageSize: Int,
     val nextPage: Int?,
-    val accounts: List<CsasAccountResponse>
+    val accounts: List<CsasAccountListItem>
 )
 
-data class CsasAccountResponse(
+data class CsasAccountListItem(
     val id: String,
     val identification: CsasAccountIdentification,
     val currency: String,

@@ -1,5 +1,6 @@
 package cz.vatras.openbanking.application
 
+import cz.vatras.openbanking.api.error.AccountNotFoundException
 import cz.vatras.openbanking.api.request.AccountsRequest
 import cz.vatras.openbanking.domain.account.Account
 import cz.vatras.openbanking.domain.balance.Balance
@@ -21,7 +22,7 @@ class AccountService(
 
         val account = adapter.getAccounts().firstOrNull { it.accountId == accountId }
         if (account == null) {
-            throw IllegalArgumentException("Account not found")
+            throw AccountNotFoundException(accountId)
         }
         return adapter.getBalances(account)
     }
@@ -31,7 +32,7 @@ class AccountService(
 
         val account = adapter.getAccounts().firstOrNull { it.accountId == accountId }
         if (account == null) {
-            throw IllegalArgumentException("Account not found")
+            throw AccountNotFoundException(accountId)
         }
         return adapter.getTransactions(account)
     }

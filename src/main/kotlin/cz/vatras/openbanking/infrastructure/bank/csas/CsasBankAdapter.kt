@@ -3,6 +3,7 @@ import cz.vatras.openbanking.domain.account.Account
 import cz.vatras.openbanking.domain.balance.Balance
 import cz.vatras.openbanking.domain.transaction.Transaction
 import cz.vatras.openbanking.infrastructure.bank.BankAdapter
+import cz.vatras.openbanking.infrastructure.bank.csas.client.CsasApiClient
 import cz.vatras.openbanking.infrastructure.bank.csas.mapper.CsasAccountMapper
 import cz.vatras.openbanking.infrastructure.bank.csas.mapper.CsasBalanceMapper
 import cz.vatras.openbanking.infrastructure.bank.csas.mapper.CsasTransactionMapper
@@ -49,48 +50,12 @@ import java.math.BigDecimal
 class CsasBankAdapter(
     private val csasAccountMapper: CsasAccountMapper,
     private val csasBalanceMapper: CsasBalanceMapper,
-    private val csasTransactionMapper: CsasTransactionMapper
+    private val csasTransactionMapper: CsasTransactionMapper,
+    private val csasApiClient: CsasApiClient
 ) : BankAdapter {
     override suspend fun getAccounts(): List<Account> {
-        val csasAccountListItems = listOf(
-            CsasAccountListItem(
-                id = "123456789",
-                identification = CsasAccountIdentification(
-                    iban = "CZ6508000000001234567890",
-                    other = "123456789"
-                ),
-                currency = "CZK",
-                servicer = CsasAccountServicer(
-                    bankCode = "0800",
-                    countryCode = "CZ",
-                    bic = "CZKOCZ1X"
-                ),
-                nameI18N = "Personal Account",
-                productI18N = "CURRENT",
-                ownersNames = listOf("John Doe"),
-                relationship = CsasAccountRelationship(isOwner = true),
-                suitableScope = emptyMap()
-            ),
-            CsasAccountListItem(
-                id = "987654321",
-                identification = CsasAccountIdentification(
-                    iban = "CZ6508000000009876543210",
-                    other = "987654321"
-                ),
-                currency = "CZK",
-                servicer = CsasAccountServicer(
-                    bankCode = "0800",
-                    countryCode = "CZ",
-                    bic = "CZKOCZ1X"
-                ),
-                nameI18N = "Savings Account",
-                productI18N = "SAVINGS",
-                ownersNames = listOf("John Doe"),
-                relationship = CsasAccountRelationship(isOwner = true),
-                suitableScope = emptyMap()
-            )
-        )
-        return csasAccountMapper.mapToAccounts(csasAccountListItems)
+        val csasAccountsResponse = csasApiClient.getAccounts()
+        return csasAccountMapper.mapToAccounts(csasAccountsResponse.accounts)
     }
 
     override suspend fun getBalances(account: Account): List<Balance> {
